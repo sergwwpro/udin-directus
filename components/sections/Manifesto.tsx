@@ -1,9 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { ua } from "@/content/ua";
+import type { HomeContent } from "@/lib/content/home";
 
-export function Manifesto() {
-  const { manifesto } = ua;
+type ManifestoProps = { content?: HomeContent["manifesto"] };
+
+export function Manifesto({ content }: ManifestoProps = {}) {
+  const manifesto = content ?? ua.manifesto;
 
   return (
     <section className="relative bg-ink text-paper">

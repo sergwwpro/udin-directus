@@ -5,9 +5,12 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { PortraitPlaceholder } from "@/components/ui/PortraitPlaceholder";
 import { ua } from "@/content/ua";
+import type { HomeContent } from "@/lib/content/home";
 
-export function Hero() {
-  const { hero } = ua;
+type HeroProps = { content?: HomeContent["hero"] };
+
+export function Hero({ content }: HeroProps = {}) {
+  const hero = content ?? ua.hero;
 
   return (
     <section id="top" className="relative overflow-hidden">

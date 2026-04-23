@@ -10,9 +10,12 @@ import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
 import { contactSchema, type ContactInput } from "@/lib/contact-schema";
 import { ua } from "@/content/ua";
+import type { HomeContent } from "@/lib/content/home";
 
-export function Contact() {
-  const { contact } = ua;
+type ContactProps = { content?: HomeContent["contact"] };
+
+export function Contact({ content }: ContactProps = {}) {
+  const contact = content ?? ua.contact;
   const {
     register,
     handleSubmit,

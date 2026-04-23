@@ -2,9 +2,12 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { PortraitPlaceholder } from "@/components/ui/PortraitPlaceholder";
 import { ua } from "@/content/ua";
+import type { HomeContent } from "@/lib/content/home";
 
-export function About() {
-  const { about } = ua;
+type AboutProps = { content?: HomeContent["about"] };
+
+export function About({ content }: AboutProps = {}) {
+  const about = content ?? ua.about;
 
   return (
     <section id="about" className="relative">

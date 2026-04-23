@@ -2,9 +2,12 @@ import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { ua } from "@/content/ua";
+import type { HomeContent } from "@/lib/content/home";
 
-export function Services() {
-  const { services } = ua;
+type ServicesProps = { content?: HomeContent["services"] };
+
+export function Services({ content }: ServicesProps = {}) {
+  const services = content ?? ua.services;
 
   return (
     <section id="services" className="relative bg-paper-raised">

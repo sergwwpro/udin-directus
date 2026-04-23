@@ -1,9 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { ua } from "@/content/ua";
+import type { HomeContent } from "@/lib/content/home";
 
-export function TrustSignals() {
-  const { trust } = ua;
+type TrustProps = { content?: HomeContent["trust"] };
+
+export function TrustSignals({ content }: TrustProps = {}) {
+  const trust = content ?? ua.trust;
 
   return (
     <section className="relative">

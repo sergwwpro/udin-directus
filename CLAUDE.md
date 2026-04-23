@@ -11,7 +11,7 @@
 - ✅ Сторінка для лікарів (`/doctor`) — готова
 - ✅ Сторінка для відділень (`/department`) — готова
 - ⬜ Backend для форми (зараз заглушка в `app/api/contact/route.ts`)
-- ⬜ CMS Directus — відкладено
+- 🔧 CMS Directus — docker-compose + MCP підключені, інтеграція з Next.js ще не зроблена
 - ⬜ RU/EN переклади — відкладено
 
 ## Стек
@@ -199,6 +199,59 @@ border-b hairline, hover: bg-paper/50 + mark/arrow → accent
 - Skip-link до `#main` (вже є в layout.tsx)
 - Aria-labels на формі та навігації
 - Семантичний HTML (h1 один на сторінку, ol/ul замість div-списків)
+
+## Directus CMS
+
+### Запуск
+```bash
+# Запустити Postgres + Directus (потрібен Docker Desktop)
+docker compose up -d
+
+# Зупинити
+docker compose down
+```
+Адмінка: `http://localhost:8055` — логін/пароль з `.env.local` (DIRECTUS_ADMIN_EMAIL / DIRECTUS_ADMIN_PASSWORD)
+
+### MCP
+`.mcp.json` підключає `@directus/content-mcp` до `http://localhost:8055`.  
+Токен: `DIRECTUS_ADMIN_TOKEN` з `.env.local` (або захардкоджений в `.mcp.json` — в ідеалі винести в env).  
+MCP активний тільки коли Directus запущений (docker).
+
+### Змінні оточення
+Файл `.env.example` — шаблон. Реальні значення в `.env.local` (gitignored).  
+Ключові змінні:
+- `POSTGRES_PASSWORD` — пароль БД
+- `DIRECTUS_KEY` + `DIRECTUS_SECRET` — секрети Directus (генерувати через `openssl rand -hex 32`)
+- `DIRECTUS_ADMIN_EMAIL` + `DIRECTUS_ADMIN_PASSWORD` — перший адмін (один раз при першому запуску)
+- `DIRECTUS_ADMIN_TOKEN` — для MCP і схем
+- `DIRECTUS_API_TOKEN` — для Next.js (read-only роль)
+- `NEXT_PUBLIC_DIRECTUS_URL` — `http://localhost:8055` для локалки
+- `REVALIDATE_SECRET` — для webhook revalidate
+
+### Поточний стан контент-моделі (Approach A)
+Головна сторінка (`/`) вже тягнеться з Directus. Колекції:
+- **`site_contacts`** (singleton) — телефони + email (shared для всіх сторінок)
+- **`a_home`** (singleton) — вся головна з 7 групами полів (SEO / Hero / Manifesto / About / Trust / Services / Contact)
+- **`a_home_manifesto_points`** (O2M child) — 3 пункти маніфесту
+- **`a_home_credentials`** (O2M child) — список досягнень
+- **`a_home_trust_stats`** (O2M child) — 4 цифри (20+ / 4 / 200+ / 1)
+- **`a_home_services`** (O2M child) — 3 картки послуг
+
+Префікс `a_` — бо розглядали й Approach B (M2A Matrix), його видалили після порівняння.
+
+### Інтеграція з Next.js
+- `lib/directus.ts` — fetch-wrapper із Bearer-токеном + ISR `revalidate: 60`
+- `lib/content/home.ts` — мапер Directus → ua-shape (`getHomeContent()`)
+- `app/page.tsx` — async server component, тягне контент і передає через props
+- Кожна секція приймає `content?: HomeContent["..."]` з fallback на `content/ua.ts` (backup при недоступному Directus)
+
+Змінні середовища (в `.env`): `NEXT_PUBLIC_DIRECTUS_URL`, `DIRECTUS_ADMIN_TOKEN`.
+
+### Що ще не зроблено
+- Підсторінки `/clinic`, `/doctor`, `/department` — тягнуться з TS-файлів, Directus-колекції ще не створювали
+- Header/Footer/Nav (site-globals) у Directus — зараз усе ще з TS-файлу
+- Webhook `/api/revalidate` для ISR при зміні в CMS
+- Окрема Content Editor роль з власним токеном (зараз використовуємо admin токен в Next.js runtime)
 
 ## Важливо
 - Шрифти Fraunces + Inter підтримують кирилицю (subset: cyrillic)
