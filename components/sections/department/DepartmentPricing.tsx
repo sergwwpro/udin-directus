@@ -2,9 +2,10 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { departmentUa } from "@/content/department-ua";
+import type { DepartmentContent } from "@/lib/content/department";
 
-export function DepartmentPricing() {
-  const { pricing } = departmentUa;
+export function DepartmentPricing({ content }: { content?: DepartmentContent }) {
+  const { pricing } = content ?? departmentUa;
   const { tier } = pricing;
 
   return (

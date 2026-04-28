@@ -1,9 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { doctorUa } from "@/content/doctor-ua";
+import type { DoctorContent } from "@/lib/content/doctor";
 
-export function DoctorGuarantees() {
-  const { guarantees } = doctorUa;
+type Props = { content?: DoctorContent["guarantees"] };
+
+export function DoctorGuarantees({ content }: Props = {}) {
+  const guarantees = content ?? doctorUa.guarantees;
 
   return (
     <section className="relative bg-ink text-paper">

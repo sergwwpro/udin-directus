@@ -1,9 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { clinicUa } from "@/content/clinic-ua";
+import type { ClinicContent } from "@/lib/content/clinic";
 
-export function ClinicScenarios() {
-  const { scenarios } = clinicUa;
+type Props = { content?: ClinicContent["scenarios"] };
+
+export function ClinicScenarios({ content }: Props = {}) {
+  const scenarios = content ?? clinicUa.scenarios;
 
   return (
     <section className="relative">

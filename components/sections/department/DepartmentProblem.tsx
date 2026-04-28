@@ -1,9 +1,10 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { departmentUa } from "@/content/department-ua";
+import type { DepartmentContent } from "@/lib/content/department";
 
-export function DepartmentProblem() {
-  const { problem } = departmentUa;
+export function DepartmentProblem({ content }: { content?: DepartmentContent }) {
+  const { problem } = content ?? departmentUa;
 
   return (
     <section className="relative bg-ink text-paper">

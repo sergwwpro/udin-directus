@@ -2,9 +2,12 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { doctorUa } from "@/content/doctor-ua";
+import type { DoctorContent } from "@/lib/content/doctor";
 
-export function DoctorEconomics() {
-  const { economics } = doctorUa;
+type Props = { content?: DoctorContent["economics"] };
+
+export function DoctorEconomics({ content }: Props = {}) {
+  const economics = content ?? doctorUa.economics;
 
   return (
     <section className="relative">

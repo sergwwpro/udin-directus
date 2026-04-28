@@ -11,7 +11,12 @@
 - ✅ Сторінка для лікарів (`/doctor`) — готова
 - ✅ Сторінка для відділень (`/department`) — готова
 - ⬜ Backend для форми (зараз заглушка в `app/api/contact/route.ts`)
-- 🔧 CMS Directus — docker-compose + MCP підключені, інтеграція з Next.js ще не зроблена
+- ✅ CMS Directus — `/` (головна) в CMS, `lib/content/home.ts`
+- ✅ CMS Directus — `/clinic` в CMS, `lib/content/clinic.ts`
+- ✅ CMS Directus — `/doctor` в CMS, `lib/content/doctor.ts`
+- ✅ CMS Directus — `/department` в CMS, `lib/content/department.ts`
+- ⬜ Webhook revalidation (`/api/revalidate`) — зміни у Directus оновлюють сайт за 60с (ISR), webhook зробить миттєво
+- ⬜ Content Editor роль для клієнта (зараз Next.js читає через admin token)
 - ⬜ RU/EN переклади — відкладено
 
 ## Стек
@@ -224,34 +229,51 @@ MCP активний тільки коли Directus запущений (docker).
 - `DIRECTUS_KEY` + `DIRECTUS_SECRET` — секрети Directus (генерувати через `openssl rand -hex 32`)
 - `DIRECTUS_ADMIN_EMAIL` + `DIRECTUS_ADMIN_PASSWORD` — перший адмін (один раз при першому запуску)
 - `DIRECTUS_ADMIN_TOKEN` — для MCP і схем
-- `DIRECTUS_API_TOKEN` — для Next.js (read-only роль)
+- `DIRECTUS_API_TOKEN` — для Next.js (read-only роль)N
 - `NEXT_PUBLIC_DIRECTUS_URL` — `http://localhost:8055` для локалки
 - `REVALIDATE_SECRET` — для webhook revalidate
 
-### Поточний стан контент-моделі (Approach A)
-Головна сторінка (`/`) вже тягнеться з Directus. Колекції:
-- **`site_contacts`** (singleton) — телефони + email (shared для всіх сторінок)
-- **`a_home`** (singleton) — вся головна з 7 групами полів (SEO / Hero / Manifesto / About / Trust / Services / Contact)
-- **`a_home_manifesto_points`** (O2M child) — 3 пункти маніфесту
-- **`a_home_credentials`** (O2M child) — список досягнень
-- **`a_home_trust_stats`** (O2M child) — 4 цифри (20+ / 4 / 200+ / 1)
-- **`a_home_services`** (O2M child) — 3 картки послуг
+### Поточний стан контент-моделі
 
-Префікс `a_` — бо розглядали й Approach B (M2A Matrix), його видалили після порівняння.
+**Патерн:** регулярна колекція (не singleton!) з одним записом `id=N` → MCP `update-item` працює нормально. Дочірні O2M-колекції приховані в UI (group + hidden:true) — клієнт бачить тільки батьківські.
+
+**Головна (`/`) — `id=1`:**
+- **`site_contacts`** (singleton, hidden) — телефони + email, shared
+- **`a_home`** (singleton) — SEO / Hero / Manifesto / About / Trust / Services / Contact
+- `a_home_manifesto_points` · `a_home_credentials` · `a_home_trust_stats` · `a_home_services` — O2M children (group: a_home, hidden)
+
+**Клініки (`/clinic`) — `id=1`:**
+- **`a_clinic`** — SEO / Hero / Problems / Solution / Included / Pricing / Scenarios / Crosslinks
+- `clinic_problems` · `clinic_included_items` · `clinic_included_guarantees` · `clinic_pricing_tiers` · `clinic_scenarios_characters` · `clinic_crosslinks` — O2M children (group: a_clinic, hidden)
+
+**Лікарі (`/doctor`) — `id=4`:**
+- **`a_doctor`** — SEO / Hero / Problems / Guarantees / Pricing / Economics / Crosslinks
+- `doctor_problems_cases` · `doctor_guarantees_items` · `doctor_pricing_core_features` · `doctor_pricing_tiers` · `doctor_pricing_extras` · `doctor_crosslinks` — O2M children (group: a_doctor, hidden)
+- **Вкладений O2M:** `doctor_pricing_tiers` → `doctor_pricing_extras` (extras per tier)
+
+**Відділення (`/department`) — `id=1`:**
+- **`a_department`** — SEO / Hero / Problem / Audience / Included / Pricing / Crosslinks
+- `department_problem_reasons` · `department_audience_items` · `department_included_items` · `department_pricing_benefits` · `department_crosslinks` — O2M children (group: a_department, hidden)
 
 ### Інтеграція з Next.js
 - `lib/directus.ts` — fetch-wrapper із Bearer-токеном + ISR `revalidate: 60`
-- `lib/content/home.ts` — мапер Directus → ua-shape (`getHomeContent()`)
-- `app/page.tsx` — async server component, тягне контент і передає через props
-- Кожна секція приймає `content?: HomeContent["..."]` з fallback на `content/ua.ts` (backup при недоступному Directus)
+- `lib/content/home.ts` → `getHomeContent()` → `app/page.tsx`
+- `lib/content/clinic.ts` → `getClinicContent()` → `app/clinic/page.tsx`
+- `lib/content/doctor.ts` → `getDoctorContent()` → `app/doctor/page.tsx`
+- `lib/content/department.ts` → `getDepartmentContent()` → `app/department/page.tsx`
+- Кожен компонент приймає `content?: PageContent["section"]` з fallback на TS-файл
 
 Змінні середовища (в `.env`): `NEXT_PUBLIC_DIRECTUS_URL`, `DIRECTUS_ADMIN_TOKEN`.
 
+### MCP обмеження
+- **Singleton** (`site_contacts`, `a_home`) — MCP `update-item` не працює (немає route `/collection/1`). Редагувати через Directus UI або REST `PATCH /items/collection`
+- **Регулярні колекції** (`a_clinic`, `a_doctor`, всі O2M child) — MCP `update-item` з `id` працює нормально
+
 ### Що ще не зроблено
-- Підсторінки `/clinic`, `/doctor`, `/department` — тягнуться з TS-файлів, Directus-колекції ще не створювали
-- Header/Footer/Nav (site-globals) у Directus — зараз усе ще з TS-файлу
-- Webhook `/api/revalidate` для ISR при зміні в CMS
-- Окрема Content Editor роль з власним токеном (зараз використовуємо admin токен в Next.js runtime)
+- `/department` — ✅ готово (`a_department` id=1, 5 child collections)
+- Header/Footer/Nav (site-globals) у Directus — зараз з TS-файлу
+- Webhook `/api/revalidate` для миттєвого ISR при зміні в CMS
+- Окрема Content Editor роль з read-only токеном (зараз admin токен)
 
 ## Важливо
 - Шрифти Fraunces + Inter підтримують кирилицю (subset: cyrillic)

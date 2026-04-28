@@ -9,31 +9,35 @@ import { ClinicIncluded } from "@/components/sections/clinic/ClinicIncluded";
 import { ClinicPricing } from "@/components/sections/clinic/ClinicPricing";
 import { ClinicScenarios } from "@/components/sections/clinic/ClinicScenarios";
 import { ClinicCrossLinks } from "@/components/sections/clinic/ClinicCrossLinks";
-import { clinicUa } from "@/content/clinic-ua";
+import { getClinicContent } from "@/lib/content/clinic";
 
-export const metadata: Metadata = {
-  title: clinicUa.meta.title,
-  description: clinicUa.meta.description,
-  openGraph: {
-    title: clinicUa.meta.title,
-    description: clinicUa.meta.description,
-    locale: "uk_UA",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getClinicContent();
+  return {
+    title: content.meta.title,
+    description: content.meta.description,
+    openGraph: {
+      title: content.meta.title,
+      description: content.meta.description,
+      locale: "uk_UA",
+      type: "website",
+    },
+  };
+}
 
-export default function ClinicPage() {
+export default async function ClinicPage() {
+  const content = await getClinicContent();
   return (
     <>
       <Header />
       <main id="main">
-        <ClinicHero />
-        <ClinicProblems />
-        <ClinicSolution />
-        <ClinicIncluded />
-        <ClinicPricing />
-        <ClinicScenarios />
-        <ClinicCrossLinks />
+        <ClinicHero content={content.hero} />
+        <ClinicProblems content={content.problems} />
+        <ClinicSolution content={content.solution} />
+        <ClinicIncluded content={content.included} />
+        <ClinicPricing content={content.pricing} />
+        <ClinicScenarios content={content.scenarios} />
+        <ClinicCrossLinks content={content.crosslinks} />
         <Contact />
       </main>
       <Footer />

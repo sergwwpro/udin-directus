@@ -1,9 +1,10 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { departmentUa } from "@/content/department-ua";
+import type { DepartmentContent } from "@/lib/content/department";
 
-export function DepartmentIncluded() {
-  const { included } = departmentUa;
+export function DepartmentIncluded({ content }: { content?: DepartmentContent }) {
+  const { included } = content ?? departmentUa;
 
   return (
     <section id="included" className="relative bg-paper-raised">

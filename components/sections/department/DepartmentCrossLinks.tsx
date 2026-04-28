@@ -3,9 +3,10 @@ import { ArrowUpRight, ArrowLeft } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { departmentUa } from "@/content/department-ua";
+import type { DepartmentContent } from "@/lib/content/department";
 
-export function DepartmentCrossLinks() {
-  const { crosslinks } = departmentUa;
+export function DepartmentCrossLinks({ content }: { content?: DepartmentContent }) {
+  const { crosslinks } = content ?? departmentUa;
 
   return (
     <section className="relative bg-paper-raised">

@@ -1,9 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { doctorUa } from "@/content/doctor-ua";
+import type { DoctorContent } from "@/lib/content/doctor";
 
-export function DoctorProblems() {
-  const { problems } = doctorUa;
+type Props = { content?: DoctorContent["problems"] };
+
+export function DoctorProblems({ content }: Props = {}) {
+  const problems = content ?? doctorUa.problems;
 
   return (
     <section id="problems" className="relative bg-paper-raised">

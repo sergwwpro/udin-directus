@@ -2,10 +2,13 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { clinicUa } from "@/content/clinic-ua";
+import type { ClinicContent } from "@/lib/content/clinic";
 import { cn } from "@/lib/utils";
 
-export function ClinicPricing() {
-  const { pricing } = clinicUa;
+type Props = { content?: ClinicContent["pricing"] };
+
+export function ClinicPricing({ content }: Props = {}) {
+  const pricing = content ?? clinicUa.pricing;
 
   return (
     <section id="pricing" className="relative bg-paper-raised">

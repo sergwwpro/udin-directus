@@ -8,30 +8,35 @@ import { DepartmentAudience } from "@/components/sections/department/DepartmentA
 import { DepartmentIncluded } from "@/components/sections/department/DepartmentIncluded";
 import { DepartmentPricing } from "@/components/sections/department/DepartmentPricing";
 import { DepartmentCrossLinks } from "@/components/sections/department/DepartmentCrossLinks";
-import { departmentUa } from "@/content/department-ua";
+import { getDepartmentContent } from "@/lib/content/department";
 
-export const metadata: Metadata = {
-  title: departmentUa.meta.title,
-  description: departmentUa.meta.description,
-  openGraph: {
-    title: departmentUa.meta.title,
-    description: departmentUa.meta.description,
-    locale: "uk_UA",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getDepartmentContent();
+  return {
+    title: content.meta.title,
+    description: content.meta.description,
+    openGraph: {
+      title: content.meta.title,
+      description: content.meta.description,
+      locale: "uk_UA",
+      type: "website",
+    },
+  };
+}
 
-export default function DepartmentPage() {
+export default async function DepartmentPage() {
+  const content = await getDepartmentContent();
+
   return (
     <>
       <Header />
       <main id="main">
-        <DepartmentHero />
-        <DepartmentProblem />
-        <DepartmentAudience />
-        <DepartmentIncluded />
-        <DepartmentPricing />
-        <DepartmentCrossLinks />
+        <DepartmentHero content={content} />
+        <DepartmentProblem content={content} />
+        <DepartmentAudience content={content} />
+        <DepartmentIncluded content={content} />
+        <DepartmentPricing content={content} />
+        <DepartmentCrossLinks content={content} />
         <Contact />
       </main>
       <Footer />

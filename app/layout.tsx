@@ -5,7 +5,7 @@ import { ua } from "@/content/ua";
 import "./globals.css";
 
 const serif = Fraunces({
-  subsets: ["latin", "latin-ext", "cyrillic"],
+  subsets: ["latin", "latin-ext", "vietnamese"],
   variable: "--font-serif",
   axes: ["opsz", "SOFT"],
   display: "swap",

@@ -1,9 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { clinicUa } from "@/content/clinic-ua";
+import type { ClinicContent } from "@/lib/content/clinic";
 
-export function ClinicIncluded() {
-  const { included } = clinicUa;
+type Props = { content?: ClinicContent["included"] };
+
+export function ClinicIncluded({ content }: Props = {}) {
+  const included = content ?? clinicUa.included;
 
   return (
     <section className="relative">

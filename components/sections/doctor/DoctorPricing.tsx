@@ -2,10 +2,13 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { doctorUa } from "@/content/doctor-ua";
+import type { DoctorContent } from "@/lib/content/doctor";
 import { cn } from "@/lib/utils";
 
-export function DoctorPricing() {
-  const { pricing } = doctorUa;
+type Props = { content?: DoctorContent["pricing"] };
+
+export function DoctorPricing({ content }: Props = {}) {
+  const pricing = content ?? doctorUa.pricing;
 
   return (
     <section id="pricing" className="relative bg-paper-raised">

@@ -8,30 +8,34 @@ import { DoctorGuarantees } from "@/components/sections/doctor/DoctorGuarantees"
 import { DoctorPricing } from "@/components/sections/doctor/DoctorPricing";
 import { DoctorEconomics } from "@/components/sections/doctor/DoctorEconomics";
 import { DoctorCrossLinks } from "@/components/sections/doctor/DoctorCrossLinks";
-import { doctorUa } from "@/content/doctor-ua";
+import { getDoctorContent } from "@/lib/content/doctor";
 
-export const metadata: Metadata = {
-  title: doctorUa.meta.title,
-  description: doctorUa.meta.description,
-  openGraph: {
-    title: doctorUa.meta.title,
-    description: doctorUa.meta.description,
-    locale: "uk_UA",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getDoctorContent();
+  return {
+    title: content.meta.title,
+    description: content.meta.description,
+    openGraph: {
+      title: content.meta.title,
+      description: content.meta.description,
+      locale: "uk_UA",
+      type: "website",
+    },
+  };
+}
 
-export default function DoctorPage() {
+export default async function DoctorPage() {
+  const content = await getDoctorContent();
   return (
     <>
       <Header />
       <main id="main">
-        <DoctorHero />
-        <DoctorProblems />
-        <DoctorGuarantees />
-        <DoctorPricing />
-        <DoctorEconomics />
-        <DoctorCrossLinks />
+        <DoctorHero content={content.hero} />
+        <DoctorProblems content={content.problems} />
+        <DoctorGuarantees content={content.guarantees} />
+        <DoctorPricing content={content.pricing} />
+        <DoctorEconomics content={content.economics} />
+        <DoctorCrossLinks content={content.crosslinks} />
         <Contact />
       </main>
       <Footer />

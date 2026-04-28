@@ -1,9 +1,10 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { departmentUa } from "@/content/department-ua";
+import type { DepartmentContent } from "@/lib/content/department";
 
-export function DepartmentAudience() {
-  const { audience } = departmentUa;
+export function DepartmentAudience({ content }: { content?: DepartmentContent }) {
+  const { audience } = content ?? departmentUa;
 
   return (
     <section className="relative">

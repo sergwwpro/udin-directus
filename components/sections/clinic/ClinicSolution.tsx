@@ -1,9 +1,12 @@
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { clinicUa } from "@/content/clinic-ua";
+import type { ClinicContent } from "@/lib/content/clinic";
 
-export function ClinicSolution() {
-  const { solution } = clinicUa;
+type Props = { content?: ClinicContent["solution"] };
+
+export function ClinicSolution({ content }: Props = {}) {
+  const solution = content ?? clinicUa.solution;
 
   return (
     <section className="relative bg-ink text-paper">

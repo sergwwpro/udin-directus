@@ -4,9 +4,12 @@ import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { clinicUa } from "@/content/clinic-ua";
+import type { ClinicContent } from "@/lib/content/clinic";
 
-export function ClinicHero() {
-  const { hero } = clinicUa;
+type Props = { content?: ClinicContent["hero"] };
+
+export function ClinicHero({ content }: Props = {}) {
+  const hero = content ?? clinicUa.hero;
 
   return (
     <section id="top" className="relative">

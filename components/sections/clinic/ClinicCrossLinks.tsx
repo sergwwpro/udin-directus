@@ -3,9 +3,12 @@ import { ArrowUpRight, ArrowLeft } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { clinicUa } from "@/content/clinic-ua";
+import type { ClinicContent } from "@/lib/content/clinic";
 
-export function ClinicCrossLinks() {
-  const { crosslinks } = clinicUa;
+type Props = { content?: ClinicContent["crosslinks"] };
+
+export function ClinicCrossLinks({ content }: Props = {}) {
+  const crosslinks = content ?? clinicUa.crosslinks;
 
   return (
     <section className="relative bg-paper-raised">

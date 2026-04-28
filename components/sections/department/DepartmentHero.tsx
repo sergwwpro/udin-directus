@@ -2,9 +2,10 @@ import { Container } from "@/components/ui/Container";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { departmentUa } from "@/content/department-ua";
+import type { DepartmentContent } from "@/lib/content/department";
 
-export function DepartmentHero() {
-  const { hero } = departmentUa;
+export function DepartmentHero({ content }: { content?: DepartmentContent }) {
+  const { hero } = content ?? departmentUa;
 
   return (
     <section className="relative pt-32 pb-24 md:pt-40 md:pb-32">
