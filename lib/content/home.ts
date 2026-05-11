@@ -59,6 +59,7 @@ const bySort = <T extends { sort: number }>(arr: T[]) =>
   [...arr].sort((a, b) => a.sort - b.sort);
 
 export async function getHomeContent() {
+  try {
   const [home, contacts] = await Promise.all([
     directusFetch<DirectusHome>(
       "/items/a_home?fields=*,manifesto_points.*,credentials.*,trust_stats.*,services_items.*",
@@ -153,6 +154,9 @@ export async function getHomeContent() {
     },
     footer: ua.footer,
   };
+  } catch {
+    return ua;
+  }
 }
 
 export type HomeContent = Awaited<ReturnType<typeof getHomeContent>>;
