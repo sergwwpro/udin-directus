@@ -9,15 +9,9 @@ export function Footer() {
       <Container className="py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           <div className="md:col-span-5">
-            <div className="flex items-center gap-3">
-              <span
-                aria-hidden
-                className="font-display text-lg leading-none border border-ink w-9 h-9 flex items-center justify-center"
-              >
-                {footer.brand.mark}
-              </span>
-              <span className="text-sm font-medium tracking-wide">{footer.brand.name}</span>
-            </div>
+            <a href="/">
+              <img src="/logo-udin.svg" alt={footer.brand.name} className="h-10 w-auto" />
+            </a>
             <p className="mt-6 max-w-sm text-sm text-muted leading-relaxed">
               {footer.tagline}
             </p>

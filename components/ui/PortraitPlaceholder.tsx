@@ -28,7 +28,7 @@ export function PortraitPlaceholder({
         <div className="absolute inset-0 flex items-center justify-center">
           <span
             className="font-display select-none text-ink/8"
-            style={{ fontSize: "clamp(9rem, 22vw, 18rem)" }}
+            style={{ fontSize: "clamp(3rem, 22vw, 4rem)" }}
             aria-hidden
           >
             {monogram}

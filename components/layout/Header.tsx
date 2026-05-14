@@ -27,16 +27,12 @@ export function Header() {
       )}
     >
       <Container as="div" className="flex items-center justify-between py-5">
-        <a href="#top" className="flex items-center gap-3 group">
-          <span
-            aria-hidden
-            className="font-display text-lg leading-none border border-ink w-9 h-9 flex items-center justify-center transition-colors group-hover:bg-ink group-hover:text-paper"
-          >
-            {header.brand.mark}
-          </span>
-          <span className="hidden sm:block text-sm font-medium tracking-wide">
-            {header.brand.name}
-          </span>
+        <a href="/" className="flex items-center">
+          <img
+            src="/logo-udin.svg"
+            alt={header.brand.name}
+            className="h-12 w-auto"
+          />
         </a>
 
         <nav className="hidden md:flex items-center gap-10">
@@ -60,27 +56,6 @@ export function Header() {
             {header.phone}
           </a>
 
-          <div className="flex items-center gap-1 text-[11px] uppercase tracking-[0.18em] font-medium">
-            {header.languages.map((lang, i) => (
-              <span key={lang.code} className="flex items-center gap-1">
-                <button
-                  className={cn(
-                    "cursor-pointer transition-colors",
-                    lang.active ? "text-ink" : "text-muted/60 hover:text-muted",
-                  )}
-                  aria-current={lang.active ? "true" : undefined}
-                  disabled={!lang.active}
-                >
-                  {lang.label}
-                </button>
-                {i < header.languages.length - 1 && (
-                  <span className="text-muted/40" aria-hidden>
-                    /
-                  </span>
-                )}
-              </span>
-            ))}
-          </div>
         </div>
       </Container>
     </header>

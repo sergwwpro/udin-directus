@@ -33,7 +33,6 @@ type DirectusHome = {
   services_lead: string;
   services_items: Array<{
     sort: number;
-    mark: string;
     title: string;
     description: string;
     meta_label: string;
@@ -121,7 +120,6 @@ export async function getHomeContent() {
       title: home.services_title,
       lead: home.services_lead,
       items: bySort(home.services_items).map((s) => ({
-        mark: s.mark,
         title: s.title,
         description: s.description,
         meta: s.meta_label,

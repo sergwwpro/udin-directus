@@ -31,14 +31,14 @@ export function Services({ content }: ServicesProps = {}) {
 
         <div className="mt-20 border-t border-hairline">
           {services.items.map((item, i) => (
-            <FadeIn key={item.mark} delay={i * 0.08}>
+            <FadeIn key={item.href} delay={i * 0.08}>
               <a
                 href={item.href}
                 className="group grid grid-cols-1 md:grid-cols-12 gap-6 py-10 md:py-14 border-b border-hairline transition-colors hover:bg-paper/50 px-2 -mx-2"
               >
                 <div className="md:col-span-2">
                   <span className="font-display text-5xl text-accent/60 group-hover:text-accent transition-colors">
-                    {item.mark}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
 
