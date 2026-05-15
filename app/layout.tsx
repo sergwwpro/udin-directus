@@ -34,7 +34,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="uk" className={`${serif.variable} ${sans.variable}`}>
-      <body className="min-h-screen bg-paper text-ink">
+      <body className="min-h-screen bg-paper text-ink" suppressHydrationWarning>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-ink focus:text-paper focus:px-4 focus:py-2"

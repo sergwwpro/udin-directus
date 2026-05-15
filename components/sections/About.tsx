@@ -16,6 +16,7 @@ export function About({ content }: AboutProps = {}) {
           <FadeIn className="lg:col-span-5">
             <PortraitPlaceholder
               monogram="ОЮ"
+              src={about.portraitUrl}
               variant="about"
               className="max-w-[440px]"
             />

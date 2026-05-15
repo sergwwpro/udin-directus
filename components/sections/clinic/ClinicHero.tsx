@@ -44,8 +44,7 @@ export function ClinicHero({ content }: Props = {}) {
             >
               {i === hero.titleLines.length - 1 ? (
                 <>
-                  {line.replace(".", "")}
-                  <span className="text-accent">.</span>
+                  {line}
                 </>
               ) : (
                 line

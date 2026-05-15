@@ -31,12 +31,10 @@ export function ClinicProblems({ content }: Props = {}) {
 
         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
           {problems.items.map((item, i) => (
-            <FadeIn key={item.mark} delay={i * 0.08}>
+            <FadeIn key={item.title} delay={i * 0.08}>
               <article className="h-full flex flex-col gap-6 bg-paper border border-hairline p-8 md:p-10">
                 <div className="flex items-baseline justify-between">
-                  <span className="font-display text-4xl text-danger/70">
-                    {item.mark}
-                  </span>
+                  <span className="font-display text-4xl text-danger/70">0{i + 1}</span>
                   <span className="h-px w-10 bg-hairline" aria-hidden />
                 </div>
                 <h3 className="font-display text-2xl md:text-3xl leading-tight">

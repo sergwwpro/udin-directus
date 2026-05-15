@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   monogram: string;
+  src?: string | null;
   caption?: string;
   subcaption?: string;
   className?: string;
@@ -10,6 +11,7 @@ type Props = {
 
 export function PortraitPlaceholder({
   monogram,
+  src,
   caption,
   subcaption,
   className,
@@ -25,15 +27,36 @@ export function PortraitPlaceholder({
           isHero ? "" : "aspect-[4/5]",
         )}
       >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span
-            className="font-display select-none text-ink/8"
-            style={{ fontSize: "clamp(3rem, 22vw, 4rem)" }}
-            aria-hidden
-          >
-            {monogram}
-          </span>
-        </div>
+        {src ? (
+          <img
+            src={src}
+            alt={monogram}
+            className="absolute inset-0 h-full w-full object-cover object-top"
+          />
+        ) : (
+          <>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span
+                className="font-display select-none text-ink/8"
+                style={{ fontSize: "clamp(3rem, 22vw, 4rem)" }}
+                aria-hidden
+              >
+                {monogram}
+              </span>
+            </div>
+
+            <div className="absolute left-4 top-4 flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
+              <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+                Portrait · Forthcoming
+              </span>
+            </div>
+
+            <div className="absolute bottom-4 right-4 font-display text-xs text-muted">
+              {new Date().getFullYear()}
+            </div>
+          </>
+        )}
 
         <div
           className="absolute inset-x-0 bottom-0 h-1/3"
@@ -43,17 +66,6 @@ export function PortraitPlaceholder({
           }}
           aria-hidden
         />
-
-        <div className="absolute left-4 top-4 flex items-center gap-2">
-          <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
-          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
-            Portrait · Forthcoming
-          </span>
-        </div>
-
-        <div className="absolute bottom-4 right-4 font-display text-xs text-muted">
-          {new Date().getFullYear()}
-        </div>
       </div>
 
       {(caption || subcaption) && (

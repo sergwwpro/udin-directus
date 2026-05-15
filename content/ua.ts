@@ -30,6 +30,7 @@ export const ua = {
     secondaryCta: { label: "Хто ми такі", href: "#about" },
     portraitCaption: "Олег Юдін · Адвокат",
     portraitSubcaption: "Голова Ради захисту прав лікарів",
+    portraitUrl: null,
   },
   manifesto: {
     eyebrow: "Маніфест",
@@ -70,6 +71,7 @@ export const ua = {
       "Понад 200 публікацій у провідних виданнях",
       "Спікер авторських семінарів і тренінгів",
     ],
+    portraitUrl: null,
   },
   trust: [
     { value: "20+", label: "років практики" },

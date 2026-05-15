@@ -14,6 +14,8 @@ type DirectusHome = {
   hero_cta_secondary_href: string;
   hero_portrait_caption: string;
   hero_portrait_subcaption: string;
+  hero_portrait: string | null;
+  about_portrait: string | null;
   manifesto_eyebrow: string;
   manifesto_quote: string;
   manifesto_points: Array<{
@@ -91,6 +93,9 @@ export async function getHomeContent() {
       },
       portraitCaption: home.hero_portrait_caption,
       portraitSubcaption: home.hero_portrait_subcaption,
+      portraitUrl: home.hero_portrait
+        ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${home.hero_portrait}`
+        : null,
     },
     manifesto: {
       eyebrow: home.manifesto_eyebrow,
@@ -105,6 +110,9 @@ export async function getHomeContent() {
       eyebrow: home.about_eyebrow,
       name: home.about_name,
       role: home.about_role,
+      portraitUrl: home.about_portrait
+        ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${home.about_portrait}`
+        : null,
       bio: home.about_bio
         .split(/\n\n+/)
         .map((s) => s.trim())

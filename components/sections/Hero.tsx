@@ -45,14 +45,7 @@ export function Hero({ content }: HeroProps = {}) {
                   }}
                   className="block"
                 >
-                  {i === hero.titleLines.length - 1 ? (
-                    <>
-                      {line.replace(".", "")}
-                      <span className="text-accent">.</span>
-                    </>
-                  ) : (
-                    line
-                  )}
+                  {line}
                 </motion.span>
               ))}
             </motion.h1>
@@ -62,14 +55,15 @@ export function Hero({ content }: HeroProps = {}) {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-4 lg:row-start-2 flex flex-col justify-end"
+            className="lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:row-span-2 flex flex-col justify-center"
           >
             <PortraitPlaceholder
               monogram="ОЮ"
+              src={hero.portraitUrl}
               caption={hero.portraitCaption}
               subcaption={hero.portraitSubcaption}
               variant="hero"
-              className="max-w-[320px] ml-auto"
+              className="max-w-[500px]"
             />
           </motion.div>
 

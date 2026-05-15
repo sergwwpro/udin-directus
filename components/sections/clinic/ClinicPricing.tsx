@@ -47,23 +47,13 @@ export function ClinicPricing({ content }: Props = {}) {
                   </span>
                 )}
 
-                <div className="flex items-baseline justify-between">
-                  <span
-                    className={cn(
-                      "font-display text-2xl",
-                      tier.recommended ? "text-accent-bright" : "text-accent/70",
-                    )}
-                  >
-                    {tier.mark}
-                  </span>
-                  <span
-                    className={cn(
-                      "h-px w-10",
-                      tier.recommended ? "bg-paper/20" : "bg-hairline",
-                    )}
-                    aria-hidden
-                  />
-                </div>
+                <span
+                  className={cn(
+                    "h-px w-10 block",
+                    tier.recommended ? "bg-paper/20" : "bg-hairline",
+                  )}
+                  aria-hidden
+                />
 
                 <h3
                   className={cn(

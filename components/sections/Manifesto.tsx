@@ -28,10 +28,10 @@ export function Manifesto({ content }: ManifestoProps = {}) {
 
         <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-px bg-paper/10">
           {manifesto.points.map((point, i) => (
-            <FadeIn key={point.number} delay={0.1 + i * 0.08} className="bg-ink">
+            <FadeIn key={point.title} delay={0.1 + i * 0.08} className="bg-ink">
               <div className="p-8 md:p-10 h-full flex flex-col gap-6">
                 <div className="flex items-baseline justify-between">
-                  <span className="font-display text-3xl text-accent-bright">{point.number}</span>
+                  <span className="font-display text-3xl text-accent-bright">0{i + 1}</span>
                   <span className="h-px w-10 bg-paper/20" aria-hidden />
                 </div>
                 <h3 className="font-display text-2xl text-paper">{point.title}</h3>
