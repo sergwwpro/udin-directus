@@ -16,11 +16,11 @@ type DirectusDepartment = {
   problem_title: string;
   problem_body: string;
   problem_conclusion: string;
-  problem_reasons: Array<{ sort: number; mark: string; text: string }>;
+  problem_reasons: Array<{ text: string }>;
   audience_eyebrow: string;
   audience_title: string;
   audience_lead: string;
-  audience_items: Array<{ sort: number; mark: string; title: string; description: string }>;
+  audience_items: Array<{ title: string; description: string }>;
   included_eyebrow: string;
   included_title: string;
   included_lead: string;
@@ -36,7 +36,7 @@ type DirectusDepartment = {
   pricing_tier_per_doctor_unit: string;
   pricing_tier_payment_note: string;
   pricing_tier_cta: string;
-  pricing_benefits: Array<{ sort: number; mark: string; text: string }>;
+  pricing_benefits: Array<{ text: string }>;
   pricing_note: string;
   pricing_closing: string;
   crosslinks_eyebrow: string;
@@ -59,8 +59,7 @@ export async function getDepartmentContent() {
       meta: { title: dept.meta_title, description: dept.meta_description },
       hero: {
         eyebrow: dept.hero_eyebrow,
-        titleLine1: dept.hero_title.split("\n")[0] ?? "",
-        titleLine2: dept.hero_title.split("\n")[1] ?? "",
+        title: dept.hero_title,
         subtitle: dept.hero_subtitle,
         tagline: dept.hero_tagline,
         taglineSupport: dept.hero_tagline_support,
@@ -72,15 +71,14 @@ export async function getDepartmentContent() {
         eyebrow: dept.problem_eyebrow,
         title: dept.problem_title,
         body: dept.problem_body,
-        reasons: bySort(dept.problem_reasons).map((r) => ({ mark: r.mark, text: r.text })),
+        reasons: dept.problem_reasons.map((r) => r.text),
         conclusion: dept.problem_conclusion,
       },
       audience: {
         eyebrow: dept.audience_eyebrow,
         title: dept.audience_title,
         lead: dept.audience_lead,
-        items: bySort(dept.audience_items).map((a) => ({
-          mark: a.mark,
+        items: dept.audience_items.map((a) => ({
           title: a.title,
           description: a.description,
         })),
@@ -104,7 +102,7 @@ export async function getDepartmentContent() {
           perDoctorUnit: dept.pricing_tier_per_doctor_unit,
           paymentNote: dept.pricing_tier_payment_note,
           cta: dept.pricing_tier_cta,
-          benefits: bySort(dept.pricing_benefits).map((b) => ({ mark: b.mark, text: b.text })),
+          benefits: dept.pricing_benefits.map((b) => b.text),
         },
         note: dept.pricing_note,
         closing: dept.pricing_closing,

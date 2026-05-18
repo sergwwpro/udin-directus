@@ -78,16 +78,16 @@ export function DepartmentPricing({ content }: { content?: DepartmentContent }) 
               <div className="lg:col-span-6 lg:border-l lg:border-paper/15 lg:pl-12">
                 <span className="eyebrow text-paper/60">Переваги пакету</span>
                 <ul className="mt-8 flex flex-col">
-                  {tier.benefits.map((b) => (
+                  {tier.benefits.map((text, i) => (
                     <li
-                      key={b.mark}
+                      key={i}
                       className="grid grid-cols-[auto_1fr] gap-5 items-baseline border-t border-paper/15 py-5 first:border-t-0 first:pt-0"
                     >
                       <span className="font-display text-lg text-accent-bright tabular-nums">
-                        {b.mark}
+                        {String(i + 1).padStart(2, "0")}
                       </span>
                       <span className="text-base text-paper/85 leading-[1.55]">
-                        {b.text}
+                        {text}
                       </span>
                     </li>
                   ))}

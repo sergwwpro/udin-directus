@@ -64,8 +64,7 @@ export async function getDoctorContent() {
       meta: { title: doctor.meta_title, description: doctor.meta_description },
       hero: {
         eyebrow: doctor.hero_eyebrow,
-        titleLine1: doctor.hero_title.split("\n")[0] ?? "",
-        titleLine2: doctor.hero_title.split("\n")[1] ?? "",
+        title: doctor.hero_title,
         subtitle: doctor.hero_subtitle,
         tagline: doctor.hero_tagline,
         taglineSupport: doctor.hero_tagline_support,

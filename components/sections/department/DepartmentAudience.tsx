@@ -27,10 +27,10 @@ export function DepartmentAudience({ content }: { content?: DepartmentContent })
 
           <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
             {audience.items.map((item, i) => (
-              <FadeIn key={item.mark} delay={0.1 + i * 0.1}>
+              <FadeIn key={item.title} delay={0.1 + i * 0.1}>
                 <article className="h-full flex flex-col gap-5 border border-hairline bg-paper p-8 md:p-10">
                   <span className="font-display text-3xl text-accent/70">
-                    {item.mark}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3 className="font-display text-2xl text-ink">
                     {item.title}

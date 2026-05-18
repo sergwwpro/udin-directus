@@ -18,10 +18,7 @@ export function DepartmentHero({ content }: { content?: DepartmentContent }) {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <h1 className="mt-8 display-hero">
-                <span className="block">{hero.titleLine1}</span>
-                <span className="block text-accent">{hero.titleLine2}</span>
-              </h1>
+              <h1 className="mt-8 display-hero">{hero.title}</h1>
             </FadeIn>
 
             <FadeIn delay={0.15}>

@@ -31,14 +31,14 @@ export function DepartmentProblem({ content }: { content?: DepartmentContent }) 
             </FadeIn>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-paper/10 border border-paper/10">
-              {problem.reasons.map((r, i) => (
-                <FadeIn key={r.mark} delay={0.2 + i * 0.06}>
+              {problem.reasons.map((text, i) => (
+                <FadeIn key={i} delay={0.2 + i * 0.06}>
                   <div className="bg-ink p-6 flex items-start gap-5 h-full">
                     <span className="font-display text-xl text-accent-bright tabular-nums">
-                      {r.mark}
+                      {String(i + 1).padStart(2, "0")}
                     </span>
                     <p className="text-sm md:text-base text-paper/80 leading-[1.55]">
-                      {r.text}
+                      {text}
                     </p>
                   </div>
                 </FadeIn>
