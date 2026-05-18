@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     locale: ua.meta.locale,
     type: "website",
   },
-  robots: { index: true, follow: true },
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({
