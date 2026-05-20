@@ -88,3 +88,6 @@ docker exec udin-postgres pg_dump -U directus --no-owner --no-acl --no-tablespac
 
 - **Фронт**: Vercel — автоматично при пуші в `main`
 - **Бек (Directus)**: Railway — https://directus-production-24e6.up.railway.app
+
+
+docker compose exec directus npx directus schema snapshot ./snapshots/snapshot.yaml
