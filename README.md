@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# advokat-udin.com.ua — Редизайн
 
-## Getting Started
+Next.js 16 + Directus CMS + PostgreSQL
 
-First, run the development server:
+## Запуск локально
 
 ```bash
+source ~/.nvm/nvm.sh && nvm use 22.18.0
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Сайт: http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Directus (CMS)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Запустити
+docker compose up -d
 
-## Learn More
+# Зупинити
+docker compose down
+```
 
-To learn more about Next.js, take a look at the following resources:
+Адмінка: http://localhost:8055  
+Логін/пароль — з `.env.local` (`DIRECTUS_ADMIN_EMAIL` / `DIRECTUS_ADMIN_PASSWORD`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## База даних — шпаргалка
 
-## Deploy on Vercel
+### Стягнути дамп з локального Docker
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+docker exec udin-postgres pg_dump -U directus --no-owner --no-acl --no-tablespaces directus > ~/Desktop/dump_clean.sql
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Залити дамп на Railway (продакшн)
+
+1. Відкрий Railway → Postgres → Database → SQL-поле, виконай:
+   ```sql
+   DROP SCHEMA public CASCADE; CREATE SCHEMA public;
+   ```
+
+2. Залий дамп через локальний Docker (він має свіжу версію psql):
+   ```bash
+   docker exec -i udin-postgres psql "postgresql://postgres:ПАРОЛЬ@viaduct.proxy.rlwy.net:53453/railway" < ~/Desktop/dump_clean.sql
+   ```
+   > Пароль: Railway → Postgres → Connect → Public Network → show
+
+### Стягнути дамп з Railway на локальну базу
+
+1. Очисти локальну базу:
+   ```bash
+   docker exec udin-postgres psql -U directus directus -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+   ```
+
+2. Стягни дамп з Railway:
+   ```bash
+   docker exec -i udin-postgres pg_dump "postgresql://postgres:ПАРОЛЬ@viaduct.proxy.rlwy.net:53453/railway" --no-owner --no-acl --no-tablespaces > ~/Desktop/railway_dump.sql
+   ```
+
+3. Залий в локальну базу:
+   ```bash
+   docker exec -i udin-postgres psql -U directus directus < ~/Desktop/railway_dump.sql
+   ```
+
+### Чому саме через Docker, а не системний psql?
+
+Системний psql на Mac версії 9.6 — Railway вимагає 10+. Docker-контейнер має актуальну версію.
+
+---
+
+## Змінні середовища
+
+Файл `.env.local` (не в git). Шаблон — `.env.example`.
+
+| Змінна | Опис |
+|---|---|
+| `POSTGRES_PASSWORD` | Пароль локальної БД |
+| `DIRECTUS_ADMIN_EMAIL` | Адмін Directus |
+| `DIRECTUS_ADMIN_PASSWORD` | Пароль адміна |
+| `DIRECTUS_ADMIN_TOKEN` | Токен для MCP і схем |
+| `DIRECTUS_API_TOKEN` | Read-only токен для Next.js |
+| `NEXT_PUBLIC_DIRECTUS_URL` | URL Directus (локально: http://localhost:8055) |
+| `RESEND_API_KEY` | Ключ для відправки форми |
+
+## Деплой
+
+- **Фронт**: Vercel — автоматично при пуші в `main`
+- **Бек (Directus)**: Railway — https://directus-production-24e6.up.railway.app
